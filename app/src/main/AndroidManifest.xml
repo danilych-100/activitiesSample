@@ -9,6 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".services.ContactsIntentService"
+            android:exported="false">
+        </service>
+
+        <activity
+            android:permission="android.permission.READ_CONTACTS"
+            android:name=".SecondaryActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

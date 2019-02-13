@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.activities">
 
+    <uses-permission android:name="android.permission.READ_CONTACTS"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,7 +17,6 @@
         </service>
 
         <activity
-            android:permission="android.permission.READ_CONTACTS"
             android:name=".SecondaryActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

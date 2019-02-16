@@ -15,6 +15,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final int SIMPLE_REQUEST_CODE = 12345;
 
+    public static final String CONTACTS = "CONTACTS";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,21 +28,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (data == null) {return;}
 
         if(requestCode == SIMPLE_REQUEST_CODE){
-            ArrayList<String> names = data.getStringArrayListExtra(Extras.CONTACTS);
-            final LinearLayout rl = findViewById(R.id.MainLayout);
-            rl.addView(createTextView("Контакты"));
-            for(String name : names) {
-                rl.addView(createTextView(String.format("Имя контакта: %s", name)));
-            }
-        }
-    }
+            final TextView contactsView = findViewById(R.id.contactsData);
 
-    private TextView createTextView(final String text){
-        TextView mainText = new TextView(this);
-        mainText.setText(text);
-        return mainText;
+            if(data != null){
+                ArrayList<String> names = data.getStringArrayListExtra(CONTACTS);
+                StringBuilder sb = new StringBuilder();
+                for(String name : names) {
+                    sb.append(getString(R.string.contactName))
+                            .append(name)
+                            .append("\n");
+                }
+                String showText = sb.length() != 0 ?
+                        sb.toString() :
+                        getString(R.string.noContactsName);
+                contactsView.setText(showText);
+            } else {
+                contactsView.setText(getString(R.string.noContactsName));
+            }
+
+        }
     }
 }

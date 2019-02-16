@@ -7,15 +7,14 @@ import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.example.activities.Actions;
-import com.example.activities.Extras;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 
 public class ContactsIntentService extends IntentService {
+
+    public static final String CONTACTS = "CONTACTS";
+    public final static String GET_CONTACTS = "com.example.activities.GET_CONTACTS";
+    public final static String BROADCAST_GET_CONTACTS = "com.example.activities.BROADCAST_GET_CONTACTS";
 
     public ContactsIntentService() {
         super("ContactsIntentService");
@@ -26,7 +25,7 @@ public class ContactsIntentService extends IntentService {
      */
     public static void startGetContactAction(Context context) {
         Intent intent = new Intent(context, ContactsIntentService.class);
-        intent.setAction(Actions.BROADCAST_GET_CONTACTS);
+        intent.setAction(BROADCAST_GET_CONTACTS);
         context.startService(intent);
     }
 
@@ -34,13 +33,13 @@ public class ContactsIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
             final String action = intent.getAction();
-            if (Actions.BROADCAST_GET_CONTACTS.equals(action)) {
+            if (BROADCAST_GET_CONTACTS.equals(action)) {
                 ArrayList<String> contacts = handleGetContactAction();
 
                 LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(this);
 
-                Intent contactsIntent = new Intent(Actions.GET_CONTACTS);
-                contactsIntent.putStringArrayListExtra(Extras.CONTACTS, contacts);
+                Intent contactsIntent = new Intent(GET_CONTACTS);
+                contactsIntent.putStringArrayListExtra(CONTACTS, contacts);
                 lbm.sendBroadcast(contactsIntent);
             }
         }
@@ -54,8 +53,8 @@ public class ContactsIntentService extends IntentService {
 
         Cursor cur = getRequestForContacts();
 
-        if (cur != null && cur.getCount() > 0){
-            while (cur != null && cur.moveToNext()){
+        if (cur != null){
+            while (cur.moveToNext()){
                 contacts.add(cur.getString(cur.getColumnIndex(
                         ContactsContract.Contacts.DISPLAY_NAME)));
             }

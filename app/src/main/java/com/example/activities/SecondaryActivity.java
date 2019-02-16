@@ -20,12 +20,14 @@ public class SecondaryActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
+    public final static String GET_CONTACTS = "com.example.activities.GET_CONTACTS";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_secondary);
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(contactsReceiver, new IntentFilter(Actions.GET_CONTACTS));
+        LocalBroadcastManager.getInstance(this).registerReceiver(contactsReceiver, new IntentFilter(GET_CONTACTS));
 
         requestContacts();
     }
